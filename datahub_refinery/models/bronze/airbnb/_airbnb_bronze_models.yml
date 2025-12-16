@@ -1,0 +1,11 @@
+version: 2
+
+models:
+  - name: airbnb_bronze_listings
+    description: "Bronze layer AirBnB listings data, casted and standardized."
+    columns:
+      - name: id
+        description: "Unique identifier for the listing."
+        quote: true
+        data_tests:
+          - not_null
