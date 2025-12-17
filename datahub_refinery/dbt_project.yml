@@ -21,7 +21,7 @@ models:
   datahub_refinery:
     +persist_docs: { relation: true, columns: true }
     
-    bronze_adf:
+    bronze:
       +database: "{{ (target.name ~ '_BRONZE_ADF') | upper }}"
       airbnb:
         +materialized: table
