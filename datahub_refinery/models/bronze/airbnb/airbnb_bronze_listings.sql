@@ -1,4 +1,7 @@
-{{ config(alias = 'AirBnBListings') }}
+{{ config(
+    alias = 'AirBnBListings',
+    post_hook = "{{ apply_row_access_policy() }}"
+) }}
 
 SELECT
     CURRENT_TIMESTAMP                               AS SYSLOADDATE,

@@ -3,9 +3,15 @@ version: 2
 models:
   - name: airbnb_bronze_listings
     description: "Bronze layer AirBnB listings data, casted and standardized."
+    config:
+      row_access_policy:
+        name: NEIGHBOURHOOD_ROOMTYPE_ACCESS_POLICY
+        columns:
+          - neighbourhood
+          - room_type
     columns:
       - name: id
-        description: "Unique identifier for the listing."
+        description: "Unique identifier for the property listing."
         quote: true
         data_tests:
           - not_null

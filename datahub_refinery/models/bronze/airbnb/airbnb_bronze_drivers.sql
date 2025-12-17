@@ -5,7 +5,7 @@ SELECT
     '{{ invocation_id }}'                   AS SYSRUNID,
     'DBT'                                   AS SYSPROCESSINGTOOL,
     '{{ project_name }}'                    AS SYSDATAPROCESSORNAME,
-    CAST(PAYLOAD:SYSSOURCE AS STRING)       AS SYSSOURCE,
+    CAST(PAYLOAD:syssource AS STRING)       AS SYSSOURCE,
     CAST(PAYLOAD:code AS STRING)            AS "code",
     CAST(PAYLOAD:dob AS DATE)               AS "dob",
     CAST(PAYLOAD:driverId AS INT)           AS "driverId",
