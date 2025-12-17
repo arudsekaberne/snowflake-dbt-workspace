@@ -1,0 +1,6 @@
+-- Optional: Use this to see '_SYSLOADDATE' in local timestamp
+ALTER SESSION SET TIMEZONE = 'Asia/Kolkata';
+
+SELECT * FROM DEV_LANDING_ADF.AIRBNB."AirBnBListings" LIMIT 5;
+SELECT * FROM DEV_LANDING_ADF.AIRBNB."AirBnBReviews" LIMIT 5;
+SELECT * FROM DEV_LANDING_ADF.AIRBNB."AirBnBDrivers" LIMIT 5;
