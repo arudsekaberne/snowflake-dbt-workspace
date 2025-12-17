@@ -2,7 +2,8 @@
     config(
         alias = 'DIM_AIRBNBLISTING_DETAILS',
         incremental_strategy = 'merge',
-        unique_key = 'ID'
+        unique_key = 'ID',
+        post_hook = "{{ manage_access_policy() }}"
     )
 }}
 

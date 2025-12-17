@@ -1,6 +1,6 @@
 {{ config(
     alias = 'AirBnBListings',
-    post_hook = "{{ apply_row_access_policy() }}"
+    post_hook = "{{ manage_access_policy() }}"
 ) }}
 
 SELECT

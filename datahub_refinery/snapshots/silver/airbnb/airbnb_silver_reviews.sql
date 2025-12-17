@@ -1,6 +1,9 @@
 {% snapshot airbnb_silver_reviews %}
 
-{{ config(alias='AirBnBReviews') }}
+{{ config(
+    alias='AirBnBReviews',
+    post_hook = "{{ manage_access_policy() }}"
+) }}
 
 SELECT
     CURRENT_TIMESTAMP       AS SYSLOADDATE,
