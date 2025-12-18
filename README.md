@@ -55,7 +55,7 @@ snowflake_workspace:
       role: [your-role]
       warehouse: [your-warehouse]
       database: [your-database]
-      schema: dev
+      schema: [your-schema]
 ```
 
 #### 4. Run dbt Models
