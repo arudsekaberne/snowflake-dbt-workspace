@@ -26,15 +26,11 @@ models:
     
     bronze:
       +database: "{{ (target.name ~ '_BRONZE_ADF') | upper }}"
-      airbnb:
-        +materialized: table
-        +schema: AIRBNB
+      +materialized: table
 
     gold:
       +database: "{{ (target.name ~ '_GOLD_ADF') | upper }}"
       +materialized: incremental
-      airbnb:
-        +schema: AIRBNB
 
 snapshots:
   datahub_refinery:
@@ -45,6 +41,3 @@ snapshots:
 
     silver:
       +database: "{{ (target.name ~ '_SILVER_ADF') | upper }}"
-      
-      airbnb:
-        +schema: AIRBNB
