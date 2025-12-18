@@ -1,8 +1,4 @@
-{{ config(
-    alias='AirBnBReviews',
-    materialized = 'view',
-    post_hook = "{{ manage_access_policy() }}"
-) }}
+{{ config(alias='AirBnBReviews', materialized='view') }}
 
 SELECT
     CURRENT_TIMESTAMP           AS SYSLOADDATE,

@@ -20,6 +20,9 @@ snapshot-paths:
 models:
   datahub_refinery:
     +persist_docs: { relation: true, columns: true }
+    +post-hook: [
+      "{{ manage_access_policy() }}"
+    ]
     
     bronze:
       +database: "{{ (target.name ~ '_BRONZE_ADF') | upper }}"
@@ -36,6 +39,9 @@ models:
 snapshots:
   datahub_refinery:
     +persist_docs: { relation: true, columns: true }
+    +post-hook: [
+      "{{ manage_access_policy() }}"
+    ]
 
     silver:
       +database: "{{ (target.name ~ '_SILVER_ADF') | upper }}"

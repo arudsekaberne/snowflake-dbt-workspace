@@ -1,6 +1,6 @@
 {% macro manage_access_policy() %}
-
-    {# Prevents accidental usage in seeds, tests, operations, or other node types #}
+    
+    {# Prevents accidental usage on other resource type #}
     {% if model.resource_type not in ['model', 'snapshot'] %}
         {{ exceptions.raise_compiler_error("manage_access_policy can only be used on models and snapshots") }}
     {% endif %}
