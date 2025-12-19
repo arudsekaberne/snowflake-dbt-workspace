@@ -5,7 +5,7 @@ models:
   - name: airbnb_bronze_reviews_v
     description: "Bronze layer AirBnB reviews data, casted and standardized view."
     config:
-      access_policy:
+      custom_access_policy:
         name: CURRENT_YEAR_ACCESS_POLICY
         columns:
           - date
@@ -13,7 +13,7 @@ models:
   - name: airbnb_bronze_reviews_sv
     description: "Bronze layer AirBnB reviews data, casted and standardized secure view."
     config:
-      access_policy:
+      custom_access_policy:
         name: CURRENT_YEAR_ACCESS_POLICY
         columns:
           - date

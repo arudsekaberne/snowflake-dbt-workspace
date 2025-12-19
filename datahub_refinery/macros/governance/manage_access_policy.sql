@@ -12,17 +12,17 @@
     ALTER {{ target_object }} {{ this }} DROP ALL ROW ACCESS POLICIES;
     
     {# Fetch configuration from the model config #}
-    {% set rap = config.get('access_policy') %}
+    {% set rap = config.get('custom_access_policy') %}
   
     {% if rap %}
     
         {# Validate rap mandatory fields exists and not empty #}
         {% if not rap.name %}
-            {{ exceptions.raise_compiler_error("access_policy must include a non-empty 'name'") }}
+            {{ exceptions.raise_compiler_error("custom_access_policy must include a non-empty 'name'") }}
         {% endif %}
 
         {% if not rap.columns %}
-            {{ exceptions.raise_compiler_error("access_policy must include a non-empty 'columns'") }}
+            {{ exceptions.raise_compiler_error("custom_access_policy must include a non-empty 'columns'") }}
         {% endif %}
     
         {% set cols = rap.columns | map('tojson') | join(', ') %}

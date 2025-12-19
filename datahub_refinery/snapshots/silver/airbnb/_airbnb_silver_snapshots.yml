@@ -23,7 +23,7 @@ snapshots:
         - '"availability_365"'
         - '"number_of_reviews_ltm"'
         - '"license"'
-      access_policy:
+      custom_access_policy:
         name: NEIGHBOURHOOD_ROOMTYPE_ACCESS_POLICY
         columns:
           - neighbourhood
@@ -41,7 +41,7 @@ snapshots:
         - '"reviewer_id"'
         - '"reviewer_name"'
         - '"comments"'
-      access_policy:
+      custom_access_policy:
         name: CURRENT_YEAR_ACCESS_POLICY
         columns:
           - date

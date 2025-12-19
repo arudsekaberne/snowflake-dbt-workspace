@@ -4,7 +4,7 @@ models:
 
   - name: airbnb_gold_dim_listing_details
     config:
-      access_policy:
+      custom_access_policy:
         name: ROOMTYPE_ACCESS_POLICY
         columns:
           - ROOM_TYPE

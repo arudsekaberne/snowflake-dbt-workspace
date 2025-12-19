@@ -5,7 +5,7 @@ models:
   - name: airbnb_bronze_listings
     description: "Bronze layer AirBnB listings data, casted and standardized."
     config:
-      access_policy:
+      custom_access_policy:
         name: NEIGHBOURHOOD_ROOMTYPE_ACCESS_POLICY
         columns:
           - neighbourhood
@@ -21,7 +21,7 @@ models:
           - not_null
           - unique
     config:
-      access_policy:
+      custom_access_policy:
         name: CURRENT_YEAR_ACCESS_POLICY
         columns:
           - date
