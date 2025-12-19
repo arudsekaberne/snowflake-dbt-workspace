@@ -41,3 +41,4 @@ snapshots:
 
     silver:
       +database: "{{ (target.name ~ '_SILVER_ADF') | upper }}"
+      +transient: false

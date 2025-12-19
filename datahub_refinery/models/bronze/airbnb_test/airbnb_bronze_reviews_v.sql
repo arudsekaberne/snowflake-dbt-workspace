@@ -1,4 +1,4 @@
-{{ config(alias='AirBnBReviews') }}
+{{ config(alias='AirBnBReviews_v', materialized='view') }}
 
 SELECT
     CURRENT_TIMESTAMP           AS SYSLOADDATE,
