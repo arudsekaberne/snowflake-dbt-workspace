@@ -5,8 +5,11 @@
         {{ exceptions.raise_compiler_error("manage_access_policy can only be used on models and snapshots") }}
     {% endif %}
 
-    {# Remove existing row access policy #}
-    ALTER TABLE {{ this }} DROP ALL ROW ACCESS POLICIES;
+    {# Get target schema object #}
+    {% set target_object = 'VIEW' if config.get('materialized') == 'view' else 'TABLE' %}
+
+    {# Remove existing row access policy #}    
+    ALTER {{ target_object }} {{ this }} DROP ALL ROW ACCESS POLICIES;
     
     {# Fetch configuration from the model config #}
     {% set rap = config.get('access_policy') %}
@@ -25,7 +28,7 @@
         {% set cols = rap.columns | map('tojson') | join(', ') %}
 
         {# Apply configured row access policy #}
-        ALTER TABLE {{ this }}
+        ALTER {{ target_object }} {{ this }}
         ADD ROW ACCESS POLICY {{ (target.name ~ '_DBTGOVERN') | upper }}.POLICIES."{{ rap.name }}"
         ON ({{ cols }});
         

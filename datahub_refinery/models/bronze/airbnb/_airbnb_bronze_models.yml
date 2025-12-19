@@ -13,6 +13,13 @@ models:
           
   - name: airbnb_bronze_reviews
     description: "Bronze layer AirBnB reviews data, casted and standardized."
+    columns:
+      - name: id
+        description: "Unique identifier for the reviews."
+        quote: true
+        data_tests:
+          - not_null
+          - unique
     config:
       access_policy:
         name: CURRENT_YEAR_ACCESS_POLICY
