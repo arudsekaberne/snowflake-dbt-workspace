@@ -1,12 +1,25 @@
 {% macro manage_access_policy() %}
+
+    {# Macro variables#}
+    {% set allowed_resources = ['model', 'snapshot'] %}
+    {% set picked_materialization = config.get('materialized') %}
+    {% set allowed_materializations = ['table', 'view', 'snapshot', 'incremental', 'dynamic_table'] %}
     
     {# Prevents accidental usage on other resource type #}
-    {% if model.resource_type not in ['model', 'snapshot'] %}
-        {{ exceptions.raise_compiler_error("manage_access_policy can only be used on models and snapshots") }}
+    {% if model.resource_type not in allowed_resources %}
+        {{ exceptions.raise_compiler_error(
+            "manage_access_policy can only be used on resources: " ~ allowed_resources | join(', ')
+        ) }}
+    {% endif %}
+
+    {% if picked_materialization not in allowed_materializations %}
+        {{ exceptions.raise_compiler_error(
+            "manage_access_policy can only be used on materializations: " ~ allowed_materializations | join(', ')
+        ) }}
     {% endif %}
 
     {# Get target schema object #}
-    {% set target_object = 'VIEW' if config.get('materialized') == 'view' else 'TABLE' %}
+    {% set target_object = 'VIEW' if picked_materialization == 'view' else 'TABLE' %}
 
     {# Remove existing row access policy #}    
     ALTER {{ target_object }} {{ this }} DROP ALL ROW ACCESS POLICIES;

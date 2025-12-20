@@ -20,8 +20,3 @@ models:
         data_tests:
           - not_null
           - unique
-    config:
-      custom_access_policy:
-        name: CURRENT_YEAR_ACCESS_POLICY
-        columns:
-          - date
