@@ -13,4 +13,4 @@ SELECT
     "reviewer_name"             AS "reviewer_name",
     "comments"                  AS "comments"
 FROM
-    {{ ref('airbnb_test_bronze_reviews_eph') }}
+    {{ source('LANDING_AIRBNB', 'AirBnBReviews') }}
