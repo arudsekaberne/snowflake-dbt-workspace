@@ -4,10 +4,8 @@ USE ROLE ACCOUNTADMIN;
 CREATE DATABASE IF NOT EXISTS DEV_DBTGOVERN;
 CREATE SCHEMA IF NOT EXISTS DEV_DBTGOVERN.POLICIES;
 
--- 2. Cleanup tags and masking policy
-DROP SCHEMA IF EXISTS DEV_BRONZE_ADF.AIRBNB_DMP;
 
--- 3. Create tags & policies
+-- 2. Create tags & policies
 CREATE OR REPLACE MASKING POLICY DEV_DBTGOVERN.POLICIES.COLUMN_NUMBER_MASKING_POLICY AS (pii_value NUMBER)
 RETURNS NUMBER ->
     CASE
@@ -25,30 +23,39 @@ RETURNS STRING ->
     END
 ;
 
--- 4. . Run dbt models
---select path:models/bronze/airbnb_dmp
---select +path:snapshots/silver/airbnb_dmp/airbnb_dmp_silver_reviews.sql
+-- 3. . Run dbt models
+--select +path:snapshots/silver/airbnb +path:models/platinum/airbnb
 
--- 5. Apply policies manually (for testing)
-
-ALTER TABLE DEV_BRONZE_ADF.AIRBNB_DMP."AirBnBReviews_inc" MODIFY COLUMN "id"
-SET MASKING POLICY DEV_DBTGOVERN.POLICIES.COLUMN_NUMBER_MASKING_POLICY
-;
-
-ALTER TABLE DEV_BRONZE_ADF.AIRBNB_DMP."AirBnBReviews_inc" MODIFY COLUMN "comments"
-SET MASKING POLICY DEV_DBTGOVERN.POLICIES.COLUMN_VARCHAR_DYNAMIC_MASKING_POLICY
-    USING("comments", "reviewer_name")
-;
-
-ALTER TABLE DEV_BRONZE_ADF.AIRBNB_DMP."AirBnBReviews_inc" MODIFY COLUMN "id" UNSET MASKING POLICY;
-ALTER TABLE DEV_BRONZE_ADF.AIRBNB_DMP."AirBnBReviews_inc" MODIFY COLUMN "comments" UNSET MASKING POLICY;
-
-DESC TABLE DEV_BRONZE_ADF.AIRBNB_DMP."AirBnBReviews_inc";
-
--- 7. Validate dbt models
+-- 4. Validate dbt models
 USE ROLE ACCOUNTADMIN;
 USE ROLE SYSADMIN;
 
-SELECT * FROM DEV_BRONZE_ADF.AIRBNB_DMP."AirBnBReviews_inc"
+SELECT "id", "reviewer_name", "comments" FROM DEV_LANDING_ADF.AIRBNB."AirBnBReviews"
 WHERE LOWER("reviewer_name") IN ('steve', 'emma')
+LIMIT 5
+;
+
+SELECT "id", "reviewer_name", "comments" FROM DEV_BRONZE_ADF.AIRBNB."AirBnBReviews"
+WHERE LOWER("reviewer_name") IN ('steve', 'emma')
+LIMIT 5
+;
+
+SELECT "id", "reviewer_name", "comments" FROM DEV_SILVER_ADF.AIRBNB."AirBnBReviews"
+WHERE LOWER("reviewer_name") IN ('steve', 'emma')
+LIMIT 5
+;
+
+SELECT "id", "reviewer_name", "comments" FROM DEV_PLATINUM_ADF.AIRBNB.FACT_AIRBNBREVIEWS_VIEW
+WHERE LOWER("reviewer_name") IN ('steve', 'emma')
+LIMIT 5
+;
+
+SELECT "id", "reviewer_name", "comments" FROM DEV_PLATINUM_ADF.AIRBNB.FACT_AIRBNBREVIEWS_SVIEW
+WHERE LOWER("reviewer_name") IN ('steve', 'emma')
+LIMIT 5
+;
+
+SELECT "id", "reviewer_name", "comments" FROM DEV_PLATINUM_ADF.AIRBNB.FACT_AIRBNBREVIEWS_DTABLE
+WHERE LOWER("reviewer_name") IN ('steve', 'emma')
+LIMIT 5
 ;

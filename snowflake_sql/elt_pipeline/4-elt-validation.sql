@@ -8,7 +8,6 @@ DROP TABLE IF EXISTS DEV_GOLD_ADF.AIRBNB.DIM_AIRBNBLISTING_DETAILS;
 DROP TABLE IF EXISTS DEV_GOLD_ADF.AIRBNB.FACT_AIRBNBLISTINGS;
 DROP SCHEMA IF EXISTS DEV_PLATINUM_ADF.AIRBNB;
 
-
 -- 2. Update landing table (Only for silver & gold table testings)
 UPDATE DEV_LANDING_ADF.AIRBNB."AirBnBListings"
 SET "name" = 'Small Studio in Nottinghill gate 2'
@@ -19,21 +18,15 @@ SELECT "id", "name" FROM DEV_LANDING_ADF.AIRBNB."AirBnBListings"
 WHERE CAST("id" AS INT) = 1000023182097063235
 ;
 
-
 -- 3. Execute DBT
---select +path:models/bronze/airbnb
---select +path:snapshots/silver/airbnb
 --select +path:models/gold/airbnb
-
 
 -- 4. Validate landing tables
 SELECT * FROM DEV_LANDING_ADF.AIRBNB."AirBnBReviews" LIMIT 5;
 SELECT * FROM DEV_LANDING_ADF.AIRBNB."AirBnBListings" LIMIT 5;
 SELECT * FROM DEV_BRONZE_ADF.AIRBNB."AirBnBDrivers" LIMIT 5;
 
-
 -- 5. Validate dbt bronze, silver (SCD Type 2), and gold (SCD Type 1)
-
 SELECT "id", "name" FROM DEV_LANDING_ADF.AIRBNB."AirBnBListings"
 WHERE "id" = '1000023182097063235'
 ;

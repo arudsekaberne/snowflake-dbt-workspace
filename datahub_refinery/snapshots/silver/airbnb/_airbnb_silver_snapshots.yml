@@ -40,3 +40,14 @@ snapshots:
         - '"reviewer_id"'
         - '"reviewer_name"'
         - '"comments"'
+    columns:
+      - name: id
+        config:
+          custom_masking_policy:
+            name: COLUMN_NUMBER_MASKING_POLICY
+      - name: comments
+        config:
+          custom_masking_policy:
+            name: COLUMN_VARCHAR_DYNAMIC_MASKING_POLICY
+            using:
+              - reviewer_name
