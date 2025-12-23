@@ -1,4 +1,4 @@
-{% macro manage_usage_policy (
+{% macro _validate_usage_policy (
     macro_name,
     selected_resources        = ['model', 'snapshot'],
     selected_materializations = ['table', 'view', 'snapshot', 'incremental', 'dynamic_table']

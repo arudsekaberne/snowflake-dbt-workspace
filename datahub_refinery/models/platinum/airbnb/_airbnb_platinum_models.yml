@@ -1,0 +1,27 @@
+version: 2
+
+models:
+
+  - name: airbnb_platinum_fact_listings_v
+    config:
+      custom_access_policy:
+        name: CURRENT_YEAR_LESS_REVIEW_ACCESS_POLICY
+        columns:
+          - LAST_REVIEW
+          - NUMBER_OF_REVIEWS
+
+  - name: airbnb_platinum_fact_listings_sv
+    config:
+      custom_access_policy:
+        name: CURRENT_YEAR_LESS_REVIEW_ACCESS_POLICY
+        columns:
+          - LAST_REVIEW
+          - NUMBER_OF_REVIEWS
+
+  - name: airbnb_platinum_fact_listings_dt
+    config:
+      custom_access_policy:
+        name: CURRENT_YEAR_LESS_REVIEW_ACCESS_POLICY
+        columns:
+          - LAST_REVIEW
+          - NUMBER_OF_REVIEWS

@@ -1,9 +1,15 @@
 version: 2
 
 models:
-
+          
   - name: airbnb_bronze_listings
     description: "Bronze layer AirBnB summary information and metrics for listings, casted and standardized."
-    
+    config:
+      custom_access_policy:
+        name: CURRENT_YEAR_LESS_REVIEW_ACCESS_POLICY
+        columns:
+          - last_review
+          - number_of_reviews
+
   - name: airbnb_bronze_reviews
     description: "Bronze layer AirBnB detailed review data, casted and standardized."

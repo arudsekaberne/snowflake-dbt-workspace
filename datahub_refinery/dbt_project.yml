@@ -21,7 +21,8 @@ models:
   datahub_refinery:
     +persist_docs: { relation: true, columns: true }
     +post-hook: [
-      "{{ manage_masking_policy() }}"
+      "{{ manage_masking_policy() }}",
+      "{{ manage_access_policy() }}"
     ]
     
     bronze:
@@ -32,11 +33,16 @@ models:
       +database: "{{ target.name | upper }}_GOLD_ADF"
       +materialized: incremental
 
+    platinum:
+      +database: "{{ target.name | upper }}_PLATINUM_ADF"
+      +materialized: view
+
 snapshots:
   datahub_refinery:
     +persist_docs: { relation: true, columns: true }
     +post-hook: [
-      "{{ manage_masking_policy() }}"
+      "{{ manage_masking_policy() }}",
+      "{{ manage_access_policy() }}"
     ]
     
     silver:
