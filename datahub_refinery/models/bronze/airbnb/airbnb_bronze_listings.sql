@@ -23,6 +23,6 @@ SELECT
     CAST("calculated_host_listings_count" AS INT)   AS "calculated_host_listings_count",
     CAST("availability_365" AS INT)                 AS "availability_365",
     CAST("number_of_reviews_ltm" AS INT)            AS "number_of_reviews_ltm",
-    "license"
+    "license"                                       AS "license"
 FROM
     {{ source('LANDING_AIRBNB', 'AirBnBListings') }}

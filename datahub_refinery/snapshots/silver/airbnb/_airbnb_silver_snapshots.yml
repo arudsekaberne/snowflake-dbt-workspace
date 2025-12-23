@@ -32,6 +32,8 @@ snapshots:
 
   - name: 'airbnb_silver_reviews'
     config:
+      contract:
+        enforced: true
       unique_key: '"id"'
       strategy: check
       check_cols:
@@ -45,3 +47,56 @@ snapshots:
         name: CURRENT_YEAR_ACCESS_POLICY
         columns:
           - date
+    columns:
+      - name: SYSLOADDATE
+        description: "Timestamp when the record was loaded into the system."
+        data_type: TIMESTAMP_LTZ
+  
+      - name: SYSRUNID
+        description: "Unique identifier for the dbt run that loaded the record."
+        data_type: VARCHAR
+  
+      - name: SYSPROCESSINGTOOL
+        description: "ETL/ELT tool used to process the data (e.g., DBT)."
+        data_type: VARCHAR
+  
+      - name: SYSDATAPROCESSORNAME
+        description: "Name of the dbt project that processed the data."
+        data_type: VARCHAR
+  
+      - name: SYSSOURCE
+        description: "Source system from which the data originated."
+        data_type: VARCHAR
+  
+      - name: id
+        description: "Unique identifier for the review."
+        data_type: NUMBER
+        quote: true
+  
+      - name: listing_id
+        description: "Unique identifier of the AirBnB listing being reviewed."
+        data_type: NUMBER
+        quote: true
+  
+      - name: date
+        description: "Date when the review was posted."
+        data_type: DATE
+        quote: true
+  
+      - name: reviewer_id
+        description: "Unique identifier of the reviewer."
+        data_type: NUMBER
+        quote: true
+  
+      - name: reviewer_name
+        description: "Name of the reviewer who submitted the review."
+        data_type: VARCHAR
+        quote: true
+  
+      - name: comments
+        description: "Free-text comments provided by the reviewer."
+        data_type: VARCHAR
+        quote: true
+        constraints:
+          - type: custom
+            expression: "MASKING POLICY {{ target.name | upper }}_DBTGOVERN.POLICIES.COLUMN_VARCHAR_MASKING_POLICY"

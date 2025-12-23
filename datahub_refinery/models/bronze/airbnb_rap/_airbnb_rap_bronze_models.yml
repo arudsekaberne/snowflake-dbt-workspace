@@ -1,0 +1,35 @@
+version: 2
+
+models:
+
+  - name: airbnb_rap_bronze_reviews
+    description: "Bronze layer AirBnB rap reviews data, casted and standardized table."
+    config:
+      custom_access_policy:
+        name: CURRENT_YEAR_ACCESS_POLICY
+        columns:
+          - date
+          
+  - name: airbnb_rap_bronze_reviews_v
+    description: "Bronze layer AirBnB rap reviews data, casted and standardized view."
+    config:
+      custom_access_policy:
+        name: CURRENT_YEAR_ACCESS_POLICY
+        columns:
+          - date
+
+  - name: airbnb_rap_bronze_reviews_sv
+    description: "Bronze layer AirBnB rap reviews data, casted and standardized secure view."
+    config:
+      custom_access_policy:
+        name: CURRENT_YEAR_ACCESS_POLICY
+        columns:
+          - date
+
+  - name: airbnb_rap_bronze_reviews_dt
+    description: "Bronze layer AirBnB rap reviews data, casted and standardized dynamic table."
+    config:
+      custom_access_policy:
+        name: CURRENT_YEAR_ACCESS_POLICY
+        columns:
+          - date

@@ -1,0 +1,15 @@
+version: 2
+
+models:
+
+  - name: airbnb_dmp_bronze_reviews
+    description: "Bronze layer AirBnB dmp reviews data, casted and standardized table."
+          
+  - name: airbnb_dmp_bronze_reviews_v
+    description: "Bronze layer AirBnB dmp reviews data, casted and standardized view."
+
+  - name: airbnb_dmp_bronze_reviews_sv
+    description: "Bronze layer AirBnB dmp reviews data, casted and standardized secure view."
+
+  - name: airbnb_dmp_bronze_reviews_dt
+    description: "Bronze layer AirBnB dmp reviews data, casted and standardized dynamic table."

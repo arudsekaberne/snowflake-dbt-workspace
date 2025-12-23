@@ -21,24 +21,24 @@ models:
   datahub_refinery:
     +persist_docs: { relation: true, columns: true }
     +post-hook: [
-      "{{ manage_access_policy() }}"
+      "{{ manage_masking_policy() }}"
     ]
     
     bronze:
-      +database: "{{ (target.name ~ '_BRONZE_ADF') | upper }}"
+      +database: "{{ target.name | upper }}_BRONZE_ADF"
       +materialized: table
 
     gold:
-      +database: "{{ (target.name ~ '_GOLD_ADF') | upper }}"
+      +database: "{{ target.name | upper }}_GOLD_ADF"
       +materialized: incremental
 
 snapshots:
   datahub_refinery:
     +persist_docs: { relation: true, columns: true }
     +post-hook: [
-      "{{ manage_access_policy() }}"
+      "{{ manage_masking_policy() }}"
     ]
-
+    
     silver:
-      +database: "{{ (target.name ~ '_SILVER_ADF') | upper }}"
+      +database: "{{ target.name | upper }}_SILVER_ADF"
       +transient: false

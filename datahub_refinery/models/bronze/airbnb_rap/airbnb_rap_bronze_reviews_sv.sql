@@ -1,11 +1,7 @@
-{{ config(alias='AirBnBReviews_v', materialized='view') }}
+{{ config(alias='AirBnBReviews_sv', materialized='view', secure=true) }}
 
 SELECT
     CURRENT_TIMESTAMP           AS SYSLOADDATE,
-    '{{ invocation_id }}'       AS SYSRUNID,
-    'DBT'                       AS SYSPROCESSINGTOOL,
-    '{{ project_name }}'        AS SYSDATAPROCESSORNAME,
-    "SYSSOURCE"                 AS SYSSOURCE,
     CAST("listing_id" AS INT)   AS "listing_id",
     CAST("id" AS INT)           AS "id",
     CAST("date" AS DATE)        AS "date",
