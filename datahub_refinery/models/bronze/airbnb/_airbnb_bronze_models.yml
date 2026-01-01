@@ -1,6 +1,9 @@
 version: 2
 
 models:
+
+  - name: airbnb_bronze_drivers
+    description: "Bronze layer AirBnB information for drivers, casted and standardized."
           
   - name: airbnb_bronze_listings
     description: "Bronze layer AirBnB summary information and metrics for listings, casted and standardized."
@@ -24,3 +27,10 @@ models:
             name: COLUMN_VARCHAR_DYNAMIC_MASKING_POLICY
             using:
               - reviewer_name
+      - name: reviewer_name_2
+        config:
+          custom_tags:
+            - name: PII_TAG_TABLE
+              value: 't-name'
+            - name: PII_TAG_COLUMN
+              value: 'c-name'

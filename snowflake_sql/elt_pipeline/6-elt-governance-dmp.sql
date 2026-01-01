@@ -24,9 +24,23 @@ RETURNS STRING ->
 ;
 
 -- 3. . Run dbt models
---select +path:snapshots/silver/airbnb +path:models/platinum/airbnb
+--select +path:snapshots/silver/airbnb/
 
--- 4. Validate dbt models
+-- 4. Validate policy apply
+
+DESC TABLE DEV_BRONZE_ADF.AIRBNB."AirBnBReviews"; -- (or)
+
+SELECT REF_COLUMN_NAME, POLICY_NAME
+FROM TABLE(
+  DEV_BRONZE_ADF.INFORMATION_SCHEMA.POLICY_REFERENCES(
+    ref_entity_name  => 'DEV_BRONZE_ADF.AIRBNB."AirBnBReviews"',
+    ref_entity_domain => 'TABLE'
+  )
+)
+WHERE POLICY_KIND = 'MASKING_POLICY' AND TAG_NAME IS NULL
+;
+
+-- 5. Validate dbt models
 USE ROLE ACCOUNTADMIN;
 USE ROLE SYSADMIN;
 

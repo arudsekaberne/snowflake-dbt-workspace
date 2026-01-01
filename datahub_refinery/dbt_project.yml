@@ -21,8 +21,7 @@ models:
   datahub_refinery:
     +persist_docs: { relation: true, columns: true }
     +post-hook: [
-      "{{ manage_masking_policy() }}",
-      "{{ manage_access_policy() }}"
+      "{{ manage_governance() }}"
     ]
     
     bronze:
@@ -41,8 +40,7 @@ snapshots:
   datahub_refinery:
     +persist_docs: { relation: true, columns: true }
     +post-hook: [
-      "{{ manage_masking_policy() }}",
-      "{{ manage_access_policy() }}"
+      "{{ manage_governance() }}"
     ]
     
     silver:

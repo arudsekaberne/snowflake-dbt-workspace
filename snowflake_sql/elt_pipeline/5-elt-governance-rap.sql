@@ -20,6 +20,17 @@ RETURNS BOOLEAN ->
 -- 4. Run dbt models
 --select +path:models/platinum/airbnb
 
+-- 4. Validate policy apply
+SELECT *
+FROM TABLE(
+  DEV_BRONZE_ADF.INFORMATION_SCHEMA.POLICY_REFERENCES(
+    ref_entity_name  => 'DEV_BRONZE_ADF.AIRBNB."AirBnBListings"',
+    ref_entity_domain => 'TABLE'
+  )
+)
+WHERE POLICY_KIND = 'ROW_ACCESS_POLICY'
+;
+
 -- 6. Validate dbt models
 USE ROLE ACCOUNTADMIN;
 USE ROLE SYSADMIN;
