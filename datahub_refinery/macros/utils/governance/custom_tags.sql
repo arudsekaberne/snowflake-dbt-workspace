@@ -1,71 +1,56 @@
-{% macro custom_tags() %}
+{% macro custom_tags(model, object_type) %}
     
-    {# Guardrail: Prevent unsafe invocation #}
-    {{ enforce_governance_context() }}
+    {# Unset tags #}
+    {% set tag_reference_sql %}
 
-    {# Get target schema object #}
-    {% set target_object = 'VIEW' if model.config.materialized == 'view' else 'TABLE' %}
-    
-    {% if execute %}
-
-        {# Unset columns with existing masking policies #}
-        {% set tag_reference_sql %}
-
-            SELECT
-                COLUMN_NAME, TAG_NAME
-            FROM TABLE(
-                {{ model.database }}.INFORMATION_SCHEMA.TAG_REFERENCES_ALL_COLUMNS(
-                    '{{ model.relation_name }}',
-                    'TABLE'
-                )
+        SELECT COLUMN_NAME, TAG_NAME FROM TABLE(
+            {{ model.database }}.INFORMATION_SCHEMA.TAG_REFERENCES_ALL_COLUMNS(
+                '{{ this }}',
+                'TABLE'
             )
-            WHERE LEVEL = 'COLUMN'
-            ;
-            
-        {% endset %}
+        )
+        WHERE LEVEL = 'COLUMN'
+        ;
         
-        {% set tag_reference_result =  run_query(tag_reference_sql) %}
-        
-        {% for row in tag_reference_result.rows %}
-        
-            ALTER {{ target_object }} {{ model.relation_name }}
-            MODIFY COLUMN "{{ row[0] }}"
-                UNSET TAG {{ target.name | upper }}_DBTGOVERN.TAGS."{{ row[1] }}"
-            ;
-        
-        {% endfor %}
-        
-        {# Set columns masking policy #}
-        {% set defined_columns = graph.nodes[model.unique_id].get('columns') %}
-        
-        {% for value in defined_columns.values()%}
+    {% endset %}
+    
+    {% set tag_reference_result =  run_query(tag_reference_sql) %}
+    
+    {% for row in tag_reference_result.rows %}
+    
+        ALTER {{ object_type }} {{ this }}
+        MODIFY COLUMN "{{ row[0] }}"
+        UNSET TAG {{ target.name | upper }}_DBTGOVERN.TAGS."{{ row[1] }}"
+        ;
+    
+    {% endfor %}
+    
+    {# Set tags #}
+    {% for column in model.columns.values() %}
 
-            {% set tag_column = value['name'] %}
-            {% set tags_config = value.get('config', {}).get('custom_tags', []) %}
-            {{ log('Tag config: ' ~ tags_config, info=True) }}
-
+        {% set tags_config = column.config.custom_tags %}
+        
+        {% if tags_config %}
+        
             {% for tag in tags_config %}
+            
+                {% if not tag.name %}
+                    {{ exceptions.raise_compiler_error('Missing tag name. Set custom_tags[i].name to a non-empty string for column ' ~ tojson(column.name) ) }}
+                {% endif %}
 
-                    {% set tag_name   = tag.get('name') %}
-                    {% set tag_value  = tag.get('value') %}
+                {% if not tag.value %}
+                    {{ exceptions.raise_compiler_error('Missing tag value. Set custom_tags[i].value to a non-empty string for column ' ~ tojson(column.name) ) }}
+                {% endif %}
     
-                    {% if not tag_name %}
-                        {{ exceptions.raise_compiler_error("Tag must define 'name' for column '" ~ tag_column ~ "'") }}
-                    {% endif %}
-    
-                    {% if not tag_value %}
-                        {{ exceptions.raise_compiler_error("Tag must define 'value' for column '" ~ tag_column ~ "'") }}
-                    {% endif %}
-        
-                    ALTER {{ target_object }} {{ model.relation_name }}
-                    MODIFY COLUMN "{{ tag_column }}"
-                        SET TAG {{ target.name | upper }}_DBTGOVERN.TAGS."{{ tag_name }}" = '{{ tag_value }}'
-                    ;
+                ALTER {{ object_type }} {{ this }}
+                MODIFY COLUMN "{{ column.name }}"
+                SET TAG {{ target.name | upper }}_DBTGOVERN.TAGS."{{ tag.name }}" = '{{ tag.value }}'
+                ;
             
             {% endfor %}
             
-        {% endfor %}
+        {% endif %}
         
-    {% endif %}
+    {% endfor %}
     
 {% endmacro %}

@@ -30,7 +30,5 @@ models:
       - name: reviewer_name_2
         config:
           custom_tags:
-            - name: PII_TAG_TABLE
-              value: 't-name'
             - name: PII_TAG_COLUMN
-              value: 'c-name'
+              value: 'name'
