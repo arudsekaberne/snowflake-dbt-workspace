@@ -1,4 +1,7 @@
 {% macro custom_tags(model, object_type) %}
+
+    {{ log_info('Tags') }}
+    {{ log_start() }}
     
     {# Unset tags #}
     {% set tag_reference_sql %}
@@ -22,15 +25,17 @@
         MODIFY COLUMN "{{ row[0] }}"
         UNSET TAG {{ target.name | upper }}_DBTGOVERN.TAGS."{{ row[1] }}"
         ;
+
+        {{ log_info('UNSET column ' ~ tojson(row[0])) }}
     
     {% endfor %}
     
     {# Set tags #}
     {% for column in model.columns.values() %}
 
-        {% set tags_config = column.config.custom_tags %}
-        
-        {% if tags_config %}
+        {% if column.config and column.config.custom_tags %}
+            
+            {% set tags_config = column.config.custom_tags %}
         
             {% for tag in tags_config %}
             
@@ -46,11 +51,15 @@
                 MODIFY COLUMN "{{ column.name }}"
                 SET TAG {{ target.name | upper }}_DBTGOVERN.TAGS."{{ tag.name }}" = '{{ tag.value }}'
                 ;
+
+                {{ log_info('SET column ' ~ tojson(column.name)) }}
             
             {% endfor %}
             
         {% endif %}
         
     {% endfor %}
+
+    {{ log_end() }}
     
 {% endmacro %}

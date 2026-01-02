@@ -51,3 +51,8 @@ snapshots:
             name: COLUMN_VARCHAR_DYNAMIC_MASKING_POLICY
             using:
               - reviewer_name
+      - name: reviewer_name_2
+        config:
+          custom_tags:
+            - name: PII_TAG_COLUMN
+              value: 'name'

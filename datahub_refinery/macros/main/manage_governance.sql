@@ -1,12 +1,5 @@
 {% macro manage_governance() %}
 
-    {% if not execute %}
-    
-        {# Prevent unsafe invocation #}
-        {{ enforce_governance_context() }}
-        
-    {% endif %}
-
     {% if execute %}
     
         {# Macro constants #}

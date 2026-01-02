@@ -1,5 +1,8 @@
 {% macro custom_masking_policy(model, object_type) %}
 
+    {{ log_info('Masking policies') }}
+    {{ log_start() }}
+    
     {# Unset masking policies #}
     {% set policy_reference_sql %}
     
@@ -22,15 +25,17 @@
         MODIFY COLUMN "{{ row[0] }}"
         UNSET MASKING POLICY
         ;
+
+        {{ log_info('UNSET column ' ~ tojson(row[0])) }}
     
     {% endfor %}
     
     {# Set masking policies #}
     {% for column in model.columns.values() %}
-
-        {% set policy = column.config.custom_masking_policy %}
         
-        {% if policy %}
+        {% if column.config and column.config.custom_masking_policy %}
+
+            {% set policy = column.config.custom_masking_policy %}
             
             {% if not policy.name %}
                 {{ exceptions.raise_compiler_error('Missing masking policy name. Set custom_masking_policy.name to a non-empty string for column ' ~ tojson(column.name) ) }}
@@ -44,9 +49,13 @@
                 USING ({{ ([ column.name ] + policy.using) | map("tojson") | join(", ") }})
             {% endif %}
             ;
-        
+
+            {{ log_info('SET column ' ~ tojson(column.name)) }}
+
         {% endif %}
-        
+    
     {% endfor %}
+
+    {{ log_end() }}
     
 {% endmacro %}
