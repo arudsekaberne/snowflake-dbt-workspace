@@ -25,26 +25,8 @@ models:
         columns:
           - last_review
           - number_of_reviews
-
-  - name: airbnb_platinum_fact_reviews_v
-    columns:
-      - name: id
-        config:
-          custom_masking_policy:
-            name: COLUMN_NUMBER_MASKING_POLICY
-      - name: comments
-        config:
-          custom_masking_policy:
-            name: COLUMN_VARCHAR_DYNAMIC_MASKING_POLICY
-            using:
-              - reviewer_name
-      - name: reviewer_name_2
-        config:
-          custom_tags:
-            - name: PII_TAG_COLUMN
-              value: 'name'
               
-  - name: airbnb_platinum_fact_reviews_v_tag
+  - name: airbnb_platinum_fact_reviews_v
     config:
       custom_tags:
         - name: PII_TAG_TABLE
@@ -64,7 +46,6 @@ models:
             name: COLUMN_VARCHAR_DYNAMIC_MASKING_POLICY
             using:
               - reviewer_name
-
 
   - name: airbnb_platinum_fact_reviews_dt
     columns:
