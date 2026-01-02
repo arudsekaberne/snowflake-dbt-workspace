@@ -1,4 +1,4 @@
-{{ config( alias='FACT_AIRBNBREVIEWS_VIEW' ) }}
+{{ config( alias='FACT_AIRBNBREVIEWS_VIEW_TAG' ) }}
 
 SELECT
     CURRENT_TIMESTAMP           AS SYSLOADDATE,
@@ -11,7 +11,6 @@ SELECT
     CAST("date" AS DATE)        AS "date",
     CAST("reviewer_id" AS INT)  AS "reviewer_id",
     "reviewer_name"             AS "reviewer_name",
-    "reviewer_name"             AS "reviewer_name_2",
     "comments"                  AS "comments"
 FROM
     {{ source('LANDING_AIRBNB', 'AirBnBReviews') }}

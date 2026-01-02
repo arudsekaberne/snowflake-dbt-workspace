@@ -16,19 +16,9 @@ models:
 
   - name: airbnb_bronze_reviews
     description: "Bronze layer AirBnB detailed review data, casted and standardized."
-    columns:
-      - name: id
-        config:
-          custom_masking_policy:
-            name: COLUMN_NUMBER_MASKING_POLICY
-      - name: comments
-        config:
-          custom_masking_policy:
-            name: COLUMN_VARCHAR_DYNAMIC_MASKING_POLICY
-            using:
-              - reviewer_name
-      - name: reviewer_name_2
-        config:
-          custom_tags:
-            - name: PII_TAG_COLUMN
-              value: 'name'
+    config:
+      custom_tags:
+        - name: PII_TAG_TABLE
+          value: 'name'
+        - name: PII_TAG_TABLE2
+          value: 'name'

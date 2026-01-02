@@ -38,7 +38,20 @@ models:
             name: COLUMN_VARCHAR_DYNAMIC_MASKING_POLICY
             using:
               - reviewer_name
-
+      - name: reviewer_name_2
+        config:
+          custom_tags:
+            - name: PII_TAG_COLUMN
+              value: 'name'
+              
+  - name: airbnb_platinum_fact_reviews_v_tag
+    config:
+      custom_tags:
+        - name: PII_TAG_TABLE
+          value: 'name'
+        - name: PII_TAG_TABLE2
+          value: 'name'
+  
   - name: airbnb_platinum_fact_reviews_sv
     columns:
       - name: id

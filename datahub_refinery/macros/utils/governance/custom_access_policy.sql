@@ -8,7 +8,7 @@
     DROP ALL ROW ACCESS POLICIES
     ;
     
-    {{ log_info('UNSET') }}
+    {{ log_info('UNSET (default)') }}
     
     {# Set row access policy #}
     {% set policy = model.config.custom_access_policy %}

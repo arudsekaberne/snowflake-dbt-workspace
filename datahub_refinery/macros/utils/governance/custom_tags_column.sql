@@ -1,13 +1,13 @@
-{% macro custom_tags(model, object_type) %}
+{% macro custom_tags_column (model, object_type) %}
 
-    {{ log_info('Tags') }}
+    {{ log_info('Column Tags') }}
     {{ log_start() }}
     
     {# Unset tags #}
     {% set tag_reference_sql %}
 
-        SELECT COLUMN_NAME, TAG_NAME FROM TABLE(
-            {{ model.database }}.INFORMATION_SCHEMA.TAG_REFERENCES_ALL_COLUMNS(
+        SELECT COLUMN_NAME, TAG_NAME FROM TABLE (
+            {{ model.database }}.INFORMATION_SCHEMA.TAG_REFERENCES_ALL_COLUMNS (
                 '{{ this }}',
                 'TABLE'
             )
@@ -38,7 +38,8 @@
             {% set tags_config = column.config.custom_tags %}
         
             {% for tag in tags_config %}
-            
+
+                {# Validate required configuration values #}
                 {% if not tag.name %}
                     {{ exceptions.raise_compiler_error('Missing tag name. Set custom_tags[i].name to a non-empty string for column ' ~ tojson(column.name) ) }}
                 {% endif %}
