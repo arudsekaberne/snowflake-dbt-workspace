@@ -1,4 +1,4 @@
-{% macro custom_access_policy (model, object_type) %}
+{% macro custom_access_policy_dev(model, object_type) %}
 
     {{ log_info('Custom access policy') }}
     {{ log_start() }}

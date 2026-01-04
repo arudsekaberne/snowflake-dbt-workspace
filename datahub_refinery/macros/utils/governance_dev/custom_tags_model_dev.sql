@@ -1,4 +1,4 @@
-{% macro custom_tags_model (model, object_type) %}
+{% macro custom_tags_model_dev(model, object_type) %}
 
     {{ log_info('Model Tags') }}
     {{ log_start() }}

@@ -1,0 +1,9 @@
+datahub_govern:
+  target: dev
+  outputs:
+    dev:
+      type: snowflake
+      role: ACCOUNTADMIN
+      warehouse: COMPUTE_WH
+      database: DEV_DBTGOVERN
+      schema: PUBLIC

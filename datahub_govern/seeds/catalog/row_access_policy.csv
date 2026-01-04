@@ -1,0 +1,2 @@
+database_name,schema_name,object_name,policy_name,policy_on
+BRONZE_ADF,AIRBNB_ADMIN,AirBnBListings,PREVIOUS_YEAR_LESS_REVIEW_ACCESS_POLICY,last_review | number_of_reviews

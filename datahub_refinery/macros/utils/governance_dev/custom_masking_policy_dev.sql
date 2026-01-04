@@ -1,4 +1,4 @@
-{% macro custom_masking_policy(model, object_type) %}
+{% macro custom_masking_policy_dev(model, object_type) %}
 
     {{ log_info('Masking policies') }}
     {{ log_start() }}

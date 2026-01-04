@@ -1,4 +1,4 @@
-{% macro custom_tags_column (model, object_type) %}
+{% macro custom_tags_column_dev(model, object_type) %}
 
     {{ log_info('Column Tags') }}
     {{ log_start() }}
