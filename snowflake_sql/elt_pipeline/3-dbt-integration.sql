@@ -26,5 +26,5 @@ SHOW VERSIONS IN DBT PROJECT DEV_DBTCENTRAL.DATAHUB_REFINERY.DATAHUB_DBT_MODELS;
 
 -- 6. SnowSQL Excution command
 EXECUTE DBT PROJECT DEV_DBTCENTRAL.DATAHUB_REFINERY.DATAHUB_DBT_MODELS
-ARGS = 'compile --select path:models/bronze/airbnb --target dev'
+ARGS = 'build --select path:models/bronze --target dev'
 ;

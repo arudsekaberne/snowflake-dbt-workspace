@@ -1,19 +1,13 @@
-{% macro custom_access_policy_adm(model_context) %}
+{% macro custom_access_policy_adm(object_type) %}
 
     {{ log_info('Row access policy') }}
     {{ log_start() }}
-
-    {# Flat macro arguments #}
-    {% set database = model_context['database'] %}
-    {% set schema = model_context['schema'] %}
-    {% set object_name = model_context['object_name'] %}
-    {% set object_type = model_context['object_type'] %}
     
     {# Unset row access policy #}
     {% set policy_reference_sql %}
     
         SELECT REF_COLUMN_NAME FROM TABLE (
-            {{ database }}.INFORMATION_SCHEMA.POLICY_REFERENCES (
+            {{ model.database }}.INFORMATION_SCHEMA.POLICY_REFERENCES (
                 ref_entity_name   => '{{ this }}',
                 ref_entity_domain => '{{ object_type }}'
             )
@@ -41,9 +35,9 @@
         SELECT
             POLICY_NAME, POLICY_ON
         FROM {{ target.name | upper }}_DBTGOVERN.CATALOG.ROW_ACCESS_POLICY_VIEW
-        WHERE DATABASE_NAME = '{{ database }}'
-          AND SCHEMA_NAME = '{{ schema }}'
-          AND OBJECT_NAME = '{{ object_name }}'
+        WHERE DATABASE_NAME = '{{ model.database }}'
+          AND SCHEMA_NAME = '{{ model.schema }}'
+          AND OBJECT_NAME = '{{ model.alias }}'
         ;
         
     {% endset %}
