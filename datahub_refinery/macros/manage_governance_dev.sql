@@ -9,7 +9,7 @@
         {% set object_type = 'VIEW' if model.config.materialized == 'view' else 'TABLE' %}
         
         {# Manage row access policy #}
-        {{ custom_access_policy_dev(model, object_type) }}
+        {{ custom_row_access_policy_dev(model, object_type) }}
         
         {# Manage dynamic masking policy #}
         {{ custom_masking_policy_dev(model, object_type) }}

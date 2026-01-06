@@ -1,4 +1,4 @@
-{% macro custom_access_policy_adm(object_type) %}
+{% macro custom_row_access_policy_dev(model, object_type) %}
 
     {{ log_info('Row access policy') }}
     {{ log_start() }}
@@ -30,34 +30,28 @@
     {% endif %}
     
     {# Set row access policy #}
-    {% set catalog_sql %}
+    {% set policy = model.config.custom_row_access_policy %}
+  
+    {% if policy %}
     
-        SELECT
-            POLICY_NAME, POLICY_ON
-        FROM {{ target.name | upper }}_DBTGOVERN.CATALOG.ROW_ACCESS_POLICY_VIEW
-        WHERE DATABASE_NAME = '{{ model.database }}'
-          AND SCHEMA_NAME = '{{ model.schema }}'
-          AND OBJECT_NAME = '{{ model.alias }}'
-        ;
+        {# Validate required configuration values #}
+        {% if not policy.name %}
+            {{ exceptions.raise_compiler_error('Missing access policy name. Set custom_row_access_policy.name to a non-empty string.') }}
+        {% endif %}
+
+        {% if not policy.columns %}
+            {{ exceptions.raise_compiler_error('Missing access policy columns. Set custom_row_access_policy.columns to a non-empty list of column names.') }}
+        {% endif %}
         
-    {% endset %}
-    
-    {% set catalog_result =  run_query(catalog_sql) %}
-    
-    {% for row in catalog_result.rows %}
-
-        {% set policy_name = row[0] %}
-        {% set policy_on   = row[1] %}
-
         ALTER {{ object_type }} {{ this }}
         ADD ROW ACCESS POLICY
-              {{ target.name | upper }}_DBTGOVERN.POLICIES."{{ policy_name }}"
-          ON ({{ fromjson(policy_on) | map("tojson") | join(", ") }})
+              {{ target.name | upper }}_DBTGOVERN.POLICIES."{{ policy.name }}"
+          ON ({{ policy.columns | map("tojson") | join(", ") }})
         ;
 
         {{ log_info('SET') }}
-    
-    {% endfor %}
+        
+    {% endif %}
 
     {{ log_end() }}
     
