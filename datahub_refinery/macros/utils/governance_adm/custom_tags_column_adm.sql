@@ -1,13 +1,19 @@
-{% macro custom_tags_column_adm(object_type) %}
+{% macro custom_tags_column_adm(model_context) %}
 
     {{ log_info('Tags: Column') }}
     {{ log_start() }}
+
+    {# Flat macro arguments #}
+    {% set database = model_context['database'] %}
+    {% set schema = model_context['schema'] %}
+    {% set object_name = model_context['object_name'] %}
+    {% set object_type = model_context['object_type'] %}
     
     {# Unset tags #}
     {% set tag_reference_sql %}
     
         SELECT COLUMN_NAME, TAG_NAME FROM TABLE (
-            {{ model.database }}.INFORMATION_SCHEMA.TAG_REFERENCES_ALL_COLUMNS (
+            {{ database }}.INFORMATION_SCHEMA.TAG_REFERENCES_ALL_COLUMNS (
                 '{{ this }}',
                 '{{ object_type }}'
             )
@@ -36,9 +42,9 @@
         SELECT
             COLUMN_NAME, TAG_NAME, TAG_VALUE
         FROM {{ target.name | upper }}_DBTGOVERN.CATALOG.TAGS_ON_COLUMN_VIEW
-        WHERE DATABASE_NAME = '{{ model.database }}'
-          AND SCHEMA_NAME = '{{ model.schema }}'
-          AND OBJECT_NAME = '{{ model.alias }}'
+        WHERE DATABASE_NAME = '{{ database }}'
+          AND SCHEMA_NAME = '{{ schema }}'
+          AND OBJECT_NAME = '{{ object_name }}'
         ;
         
     {% endset %}
