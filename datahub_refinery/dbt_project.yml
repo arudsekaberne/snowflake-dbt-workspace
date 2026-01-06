@@ -20,10 +20,7 @@ snapshot-paths:
 models:
   datahub_refinery:
     +persist_docs: { relation: true, columns: true }
-    +post-hook: [
-      "{{ manage_governance_adm() }}"
-    ]
-    
+
     bronze:
       +database: "{{ target.name | upper }}_BRONZE_ADF"
       +materialized: table
@@ -36,13 +33,18 @@ models:
       +database: "{{ target.name | upper }}_PLATINUM_ADF"
       +materialized: view
 
+    +post_hook: [
+        "{{ manage_governance_adm() }}"
+    ]
+
 snapshots:
   datahub_refinery:
     +persist_docs: { relation: true, columns: true }
-    +post-hook: [
-      "{{ manage_governance_adm() }}"
-    ]
-    
+
     silver:
       +database: "{{ target.name | upper }}_SILVER_ADF"
       +transient: false
+
+    +post_hook: [
+        "{{ manage_governance_adm() }}"
+    ]

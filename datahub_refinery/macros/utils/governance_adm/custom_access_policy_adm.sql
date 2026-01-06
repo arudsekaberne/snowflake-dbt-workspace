@@ -1,17 +1,36 @@
 {% macro custom_access_policy_adm(object_type) %}
 
-    {{ log_info('Custom access policy (admin)') }}
+    {{ log_info('Row access policy') }}
     {{ log_start() }}
     
     {# Unset row access policy #}
-    ALTER {{ object_type }} {{ this }}
-    DROP ALL ROW ACCESS POLICIES
-    ;
+    {% set policy_reference_sql %}
     
-    {{ log_info('UNSET (default)') }}
+        SELECT REF_COLUMN_NAME FROM TABLE (
+            {{ model.database }}.INFORMATION_SCHEMA.POLICY_REFERENCES (
+                ref_entity_name   => '{{ this }}',
+                ref_entity_domain => '{{ object_type }}'
+            )
+        )
+        WHERE POLICY_KIND = 'ROW_ACCESS_POLICY'
+        ;
+        
+    {% endset %}
+    
+    {% set policy_reference_result =  run_query(policy_reference_sql) %}
+    
+    {% if policy_reference_result %}
+    
+        ALTER {{ object_type }} {{ this }}
+        DROP ALL ROW ACCESS POLICIES
+        ;
+
+        {{ log_info('UNSET') }}
+    
+    {% endif %}
     
     {# Set row access policy #}
-    {% set policy_catalog_sql %}
+    {% set catalog_sql %}
     
         SELECT
             POLICY_NAME, POLICY_ON
@@ -23,9 +42,9 @@
         
     {% endset %}
     
-    {% set policy_catalog_result =  run_query(policy_catalog_sql) %}
+    {% set catalog_result =  run_query(catalog_sql) %}
     
-    {% for row in policy_catalog_result.rows %}
+    {% for row in catalog_result.rows %}
 
         {% set policy_name = row[0] %}
         {% set policy_on   = row[1] %}

@@ -23,11 +23,6 @@ snapshots:
         - '"availability_365"'
         - '"number_of_reviews_ltm"'
         - '"license"'
-      custom_access_policy:
-        name: CURRENT_YEAR_LESS_REVIEW_ACCESS_POLICY
-        columns:
-          - last_review
-          - number_of_reviews
 
   - name: 'airbnb_silver_reviews'
     config:
@@ -40,19 +35,3 @@ snapshots:
         - '"reviewer_id"'
         - '"reviewer_name"'
         - '"comments"'
-    columns:
-      - name: id
-        config:
-          custom_masking_policy:
-            name: COLUMN_NUMBER_MASKING_POLICY
-      - name: comments
-        config:
-          custom_masking_policy:
-            name: COLUMN_VARCHAR_DYNAMIC_MASKING_POLICY
-            using:
-              - reviewer_name
-      - name: reviewer_name_2
-        config:
-          custom_tags:
-            - name: PII_TAG_COLUMN
-              value: 'name'

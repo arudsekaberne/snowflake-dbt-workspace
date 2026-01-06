@@ -1,0 +1,3 @@
+database_name,schema_name,object_name,column_name,policy_name,policy_using
+BRONZE_ADF,AIRBNB_ADM,AirBnBReviews,id,COLUMN_NUMBER_MASKING_POLICY,
+BRONZE_ADF,AIRBNB_ADM,AirBnBReviews,comments,COLUMN_VARCHAR_DYNAMIC_MASKING_POLICY,reviewer_name

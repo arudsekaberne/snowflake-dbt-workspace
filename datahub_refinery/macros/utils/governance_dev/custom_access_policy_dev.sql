@@ -1,14 +1,33 @@
 {% macro custom_access_policy_dev(model, object_type) %}
 
-    {{ log_info('Custom access policy') }}
+    {{ log_info('Row access policy') }}
     {{ log_start() }}
     
     {# Unset row access policy #}
-    ALTER {{ object_type }} {{ this }}
-    DROP ALL ROW ACCESS POLICIES
-    ;
+    {% set policy_reference_sql %}
     
-    {{ log_info('UNSET (default)') }}
+        SELECT REF_COLUMN_NAME FROM TABLE (
+            {{ model.database }}.INFORMATION_SCHEMA.POLICY_REFERENCES (
+                ref_entity_name   => '{{ this }}',
+                ref_entity_domain => '{{ object_type }}'
+            )
+        )
+        WHERE POLICY_KIND = 'ROW_ACCESS_POLICY'
+        ;
+        
+    {% endset %}
+    
+    {% set policy_reference_result =  run_query(policy_reference_sql) %}
+    
+    {% if policy_reference_result %}
+    
+        ALTER {{ object_type }} {{ this }}
+        DROP ALL ROW ACCESS POLICIES
+        ;
+
+        {{ log_info('UNSET') }}
+    
+    {% endif %}
     
     {# Set row access policy #}
     {% set policy = model.config.custom_access_policy %}

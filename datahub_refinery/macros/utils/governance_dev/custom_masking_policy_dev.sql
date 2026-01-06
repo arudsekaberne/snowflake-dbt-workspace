@@ -6,8 +6,8 @@
     {# Unset masking policies #}
     {% set policy_reference_sql %}
     
-        SELECT REF_COLUMN_NAME FROM TABLE(
-            {{ model.database }}.INFORMATION_SCHEMA.POLICY_REFERENCES(
+        SELECT REF_COLUMN_NAME FROM TABLE (
+            {{ model.database }}.INFORMATION_SCHEMA.POLICY_REFERENCES (
                 ref_entity_name   => '{{ this }}',
                 ref_entity_domain => '{{ object_type }}'
             )

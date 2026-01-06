@@ -3,9 +3,4 @@ version: 2
 models:
 
   - name: airbnb_gold_fact_listings
-    config:
-      custom_access_policy:
-        name: CURRENT_YEAR_LESS_REVIEW_ACCESS_POLICY
-        columns:
-          - LAST_REVIEW
-          - NUMBER_OF_REVIEWS
+  - name: airbnb_gold_dim_listing_details

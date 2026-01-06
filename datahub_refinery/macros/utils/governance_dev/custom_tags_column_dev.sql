@@ -1,6 +1,6 @@
 {% macro custom_tags_column_dev(model, object_type) %}
 
-    {{ log_info('Column Tags') }}
+    {{ log_info('Tags: Column') }}
     {{ log_start() }}
     
     {# Unset tags #}
@@ -9,7 +9,7 @@
         SELECT COLUMN_NAME, TAG_NAME FROM TABLE (
             {{ model.database }}.INFORMATION_SCHEMA.TAG_REFERENCES_ALL_COLUMNS (
                 '{{ this }}',
-                'TABLE'
+                '{{ object_type }}'
             )
         )
         WHERE LEVEL = 'COLUMN'

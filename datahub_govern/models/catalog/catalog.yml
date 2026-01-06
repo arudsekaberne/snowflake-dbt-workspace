@@ -1,0 +1,40 @@
+version: 2
+
+models:
+
+  - name: masking_policy_view
+    columns:
+      - name: DATABASE_NAME
+        data_tests:
+          - not_null
+      - name: SCHEMA_NAME
+        data_tests:
+          - not_null
+      - name: OBJECT_NAME
+        data_tests:
+          - not_null
+      - name: COLUMN_NAME
+        data_tests:
+          - not_null
+      - name: POLICY_NAME
+        data_tests:
+          - not_null
+      - name: POLICY_USING
+          
+  - name: row_access_policy_view
+    columns:
+      - name: DATABASE_NAME
+        data_tests:
+          - not_null
+      - name: SCHEMA_NAME
+        data_tests:
+          - not_null
+      - name: OBJECT_NAME
+        data_tests:
+          - not_null
+      - name: POLICY_NAME
+        data_tests:
+          - not_null
+      - name: POLICY_ON
+        data_tests:
+          - not_null

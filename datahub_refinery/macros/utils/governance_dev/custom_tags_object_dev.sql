@@ -1,6 +1,6 @@
-{% macro custom_tags_model_dev(model, object_type) %}
+{% macro custom_tags_object_dev(model, object_type) %}
 
-    {{ log_info('Model Tags') }}
+    {{ log_info('Tags: Object') }}
     {{ log_start() }}
     
     {# Unset tags #}
@@ -9,7 +9,7 @@
         SELECT TAG_NAME FROM TABLE (
             {{ model.database }}.INFORMATION_SCHEMA.TAG_REFERENCES (
                 '{{ this }}',
-                'TABLE'
+                '{{ object_type }}'
             )
         );
         
@@ -40,8 +40,7 @@
         {% if not tag.value %}
             {{ exceptions.raise_compiler_error('Missing tag value. Set custom_tags[i].value to a non-empty string') }}
         {% endif %}
-
-    
+ 
         ALTER {{ object_type }} {{ this }}
         SET TAG {{ target.name | upper }}_DBTGOVERN.TAGS."{{ tag.name }}" = '{{ tag.value }}'
         ;

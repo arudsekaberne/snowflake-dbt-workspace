@@ -7,3 +7,4 @@ datahub_refinery:
       warehouse: COMPUTE_WH
       database: DEV_BRONZE_ADF
       schema: PUBLIC
+      user: ARUDSEKABERNESNOWEXP3

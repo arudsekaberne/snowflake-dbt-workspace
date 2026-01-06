@@ -13,7 +13,6 @@ SELECT
     "date",
     "reviewer_id",
     "reviewer_name",
-    "reviewer_name_2",
     "comments"
 from {{ ref('airbnb_bronze_reviews') }}
 

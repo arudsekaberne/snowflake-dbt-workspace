@@ -1,0 +1,45 @@
+version: 2
+
+seeds:
+
+  - name: row_access_policy
+    config:
+      delimiter: ','
+      column_types:
+        database_name: STRING
+        schema_name: STRING
+        object_name: STRING
+        policy_name: STRING
+        policy_on: STRING
+        
+  - name: masking_policy
+    config:
+      delimiter: ','
+      column_types:
+        database_name: STRING
+        schema_name: STRING
+        object_name: STRING
+        column_name: STRING
+        policy_name: STRING
+        policy_using: STRING
+
+  - name: tags_on_object
+    config:
+      delimiter: ','
+      column_types:
+        database_name: STRING
+        schema_name: STRING
+        object_name: STRING
+        tag_name: STRING
+        tag_value: STRING
+        
+  - name: tags_on_column
+    config:
+      delimiter: ','
+      column_types:
+        database_name: STRING
+        schema_name: STRING
+        object_name: STRING
+        column_name: STRING
+        tag_name: STRING
+        tag_value: STRING

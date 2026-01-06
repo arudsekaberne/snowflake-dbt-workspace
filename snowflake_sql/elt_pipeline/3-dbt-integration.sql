@@ -10,6 +10,11 @@ CREATE OR REPLACE DBT PROJECT DEV_DBTCENTRAL.DATAHUB_REFINERY.DATAHUB_DBT_MODELS
   COMMENT = 'Snowflake DBT Project for datahub_refinery'
 ;
 
+CREATE OR REPLACE DBT PROJECT DEV_DBTCENTRAL.DATAHUB_REFINERY.DATAHUB_DBT_GOVERN
+  FROM 'snow://workspace/"USER$"."PUBLIC"."snowflake-dbt-workspace"/versions/head/datahub_govern'
+  COMMENT = 'Snowflake DBT Project for datahub_govern'
+;
+
 -- 4. Update dbt project
 ALTER DBT PROJECT DEV_DBTCENTRAL.DATAHUB_REFINERY.DATAHUB_DBT_MODELS
   ADD VERSION

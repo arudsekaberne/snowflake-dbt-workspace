@@ -1,4 +1,4 @@
-{{ config(alias = 'ROW_ACCESS_POLICY_VIEW') }}
+{{ config(alias = 'TAGS_ON_COLUMN_VIEW') }}
 
 SELECT
     CURRENT_TIMESTAMP                                             AS SYSLOADDATE,
@@ -8,7 +8,8 @@ SELECT
     CONCAT('{{ target.name | upper }}', '_', TRIM(DATABASE_NAME)) AS DATABASE_NAME,
     TRIM(SCHEMA_NAME)                                             AS SCHEMA_NAME,
     TRIM(OBJECT_NAME)                                             AS OBJECT_NAME,
-    TRIM(POLICY_NAME)                                             AS POLICY_NAME,
-    TRANSFORM(SPLIT(POLICY_ON, '|'), POLICY -> TRIM(POLICY))      AS POLICY_ON
+    TRIM(COLUMN_NAME)                                             AS COLUMN_NAME,
+    TRIM(TAG_NAME)                                                AS TAG_NAME,
+    TRIM(TAG_VALUE)                                               AS TAG_VALUE,
 FROM
-    {{ ref('row_access_policy') }}
+    {{ ref('tags_on_column') }}
