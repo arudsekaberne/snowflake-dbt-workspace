@@ -7,7 +7,8 @@ CREATE DATABASE IF NOT EXISTS DEV_DBTGOVERN;
 DROP SCHEMA IF EXISTS DEV_BRONZE_ADF.AIRBNB;
     
 -- 3. Policy applied by developer
---select path:models/bronze/airbnb (modify post hook)
+--select path:models/bronze/airbnb   (modify post hook)
+--select path:models/platinum/airbnb (modify post hook)
 
 USE ROLE ACCOUNTADMIN;
 USE ROLE SYSADMIN;

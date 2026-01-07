@@ -1,8 +1,6 @@
 {{ config(alias = 'ROW_ACCESS_POLICY_VIEW') }}
 
 SELECT
-    CURRENT_TIMESTAMP                                             AS SYSLOADDATE,
-    '{{ invocation_id }}'                                         AS SYSRUNID,
     'DBT'                                                         AS SYSPROCESSINGTOOL,
     '{{ project_name }}'                                          AS SYSDATAPROCESSORNAME,
     CONCAT('{{ target.name | upper }}', '_', TRIM(DATABASE_NAME)) AS DATABASE_NAME,

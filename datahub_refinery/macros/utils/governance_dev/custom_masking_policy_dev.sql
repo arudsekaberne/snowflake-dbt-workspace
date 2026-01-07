@@ -4,31 +4,35 @@
     {{ log_start() }}
     
     {# Unset masking policies #}
-    {% set policy_reference_sql %}
+    {% if object_type == 'TABLE' %}
     
-        SELECT REF_COLUMN_NAME FROM TABLE (
-            {{ model.database }}.INFORMATION_SCHEMA.POLICY_REFERENCES (
-                ref_entity_name   => '{{ this }}',
-                ref_entity_domain => '{{ object_type }}'
-            )
-        )
-        WHERE POLICY_KIND = 'MASKING_POLICY' AND TAG_NAME IS NULL
-        ;
+        {% set policy_reference_sql %}
         
-    {% endset %}
+            SELECT REF_COLUMN_NAME FROM TABLE (
+                {{ model.database }}.INFORMATION_SCHEMA.POLICY_REFERENCES (
+                    ref_entity_name   => '{{ this }}',
+                    ref_entity_domain => '{{ object_type }}'
+                )
+            )
+            WHERE POLICY_KIND = 'MASKING_POLICY' AND TAG_NAME IS NULL
+            ;
+            
+        {% endset %}
+        
+        {% set policy_reference_result =  run_query(policy_reference_sql) %}
+        
+        {% for row in policy_reference_result.rows %}
+        
+            ALTER {{ object_type }} {{ this }}
+            MODIFY COLUMN "{{ row[0] }}"
+            UNSET MASKING POLICY
+            ;
     
-    {% set policy_reference_result =  run_query(policy_reference_sql) %}
-    
-    {% for row in policy_reference_result.rows %}
-    
-        ALTER {{ object_type }} {{ this }}
-        MODIFY COLUMN "{{ row[0] }}"
-        UNSET MASKING POLICY
-        ;
+            {{ log_info('UNSET column ' ~ tojson(row[0])) }}
+        
+        {% endfor %}
 
-        {{ log_info('UNSET column ' ~ tojson(row[0])) }}
-    
-    {% endfor %}
+    {% endif %}
     
     {# Set masking policies #}
     {% for column in model.columns.values() %}

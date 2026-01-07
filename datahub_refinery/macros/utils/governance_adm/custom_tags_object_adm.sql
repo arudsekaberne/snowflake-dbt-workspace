@@ -4,28 +4,32 @@
     {{ log_start() }}
     
     {# Unset tags #}
-    {% set tag_reference_sql %}
+    {% if object_type == 'TABLE' %}
+    
+        {% set tag_reference_sql %}
+            
+            SELECT TAG_NAME FROM TABLE (
+                {{ model.database }}.INFORMATION_SCHEMA.TAG_REFERENCES (
+                    '{{ this }}',
+                    '{{ object_type }}'
+                )
+            );
+            
+        {% endset %}
         
-        SELECT TAG_NAME FROM TABLE (
-            {{ model.database }}.INFORMATION_SCHEMA.TAG_REFERENCES (
-                '{{ this }}',
-                '{{ object_type }}'
-            )
-        );
+        {% set tag_reference_result =  run_query(tag_reference_sql) %}
         
-    {% endset %}
+        {% for row in tag_reference_result.rows %}
+        
+            ALTER {{ object_type }} {{ this }}
+            UNSET TAG {{ target.name | upper }}_DBTGOVERN.TAGS."{{ row[0] }}"
+            ;
     
-    {% set tag_reference_result =  run_query(tag_reference_sql) %}
-    
-    {% for row in tag_reference_result.rows %}
-    
-        ALTER {{ object_type }} {{ this }}
-        UNSET TAG {{ target.name | upper }}_DBTGOVERN.TAGS."{{ row[0] }}"
-        ;
+            {{ log_info('UNSET ' ~ tojson(row[0])) }}
+        
+        {% endfor %}
 
-        {{ log_info('UNSET ' ~ tojson(row[0])) }}
-    
-    {% endfor %}
+    {% endif %}
     
     {# Set tags #}
     {% set catalog_sql %}

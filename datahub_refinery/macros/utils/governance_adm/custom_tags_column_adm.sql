@@ -4,31 +4,35 @@
     {{ log_start() }}
     
     {# Unset tags #}
-    {% set tag_reference_sql %}
+    {% if object_type == 'TABLE' %}
     
-        SELECT COLUMN_NAME, TAG_NAME FROM TABLE (
-            {{ model.database }}.INFORMATION_SCHEMA.TAG_REFERENCES_ALL_COLUMNS (
-                '{{ this }}',
-                '{{ object_type }}'
-            )
-        )
-        WHERE LEVEL = 'COLUMN'
-        ;
+        {% set tag_reference_sql %}
         
-    {% endset %}
+            SELECT COLUMN_NAME, TAG_NAME FROM TABLE (
+                {{ model.database }}.INFORMATION_SCHEMA.TAG_REFERENCES_ALL_COLUMNS (
+                    '{{ this }}',
+                    '{{ object_type }}'
+                )
+            )
+            WHERE LEVEL = 'COLUMN'
+            ;
+            
+        {% endset %}
+        
+        {% set tag_reference_result =  run_query(tag_reference_sql) %}
+        
+        {% for row in tag_reference_result.rows %}
+        
+            ALTER {{ object_type }} {{ this }}
+            MODIFY COLUMN "{{ row[0] }}"
+            UNSET TAG {{ target.name | upper }}_DBTGOVERN.TAGS."{{ row[1] }}"
+            ;
     
-    {% set tag_reference_result =  run_query(tag_reference_sql) %}
-    
-    {% for row in tag_reference_result.rows %}
-    
-        ALTER {{ object_type }} {{ this }}
-        MODIFY COLUMN "{{ row[0] }}"
-        UNSET TAG {{ target.name | upper }}_DBTGOVERN.TAGS."{{ row[1] }}"
-        ;
+            {{ log_info('UNSET column ' ~ tojson(row[0])) }}
+        
+        {% endfor %}
 
-        {{ log_info('UNSET column ' ~ tojson(row[0])) }}
-    
-    {% endfor %}
+    {% endif %}
     
     {# Set tags #}
     {% set catalog_sql %}

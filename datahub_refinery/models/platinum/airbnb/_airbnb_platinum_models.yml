@@ -3,13 +3,64 @@ version: 2
 models:
 
   - name: airbnb_platinum_fact_listings_v
+    config:
+      custom_row_access_policy:
+        name: PREVIOUS_YEAR_LESS_REVIEW_ACCESS_POLICY
+        columns:
+          - last_review
+          - number_of_reviews
 
   - name: airbnb_platinum_fact_listings_sv
+    config:
+      custom_row_access_policy:
+        name: PREVIOUS_YEAR_LESS_REVIEW_ACCESS_POLICY
+        columns:
+          - last_review
+          - number_of_reviews
 
   - name: airbnb_platinum_fact_listings_dt
+    config:
+      custom_row_access_policy:
+        name: PREVIOUS_YEAR_LESS_REVIEW_ACCESS_POLICY
+        columns:
+          - last_review
+          - number_of_reviews
               
   - name: airbnb_platinum_fact_reviews_v
+    columns:
+      - name: id
+        config:
+          custom_masking_policy:
+            name: COLUMN_NUMBER_MASKING_POLICY
+      - name: comments
+        config:
+          custom_masking_policy:
+            name: COLUMN_VARCHAR_DYNAMIC_MASKING_POLICY
+            using:
+              - reviewer_name
   
   - name: airbnb_platinum_fact_reviews_sv
+    columns:
+      - name: id
+        config:
+          custom_masking_policy:
+            name: COLUMN_NUMBER_MASKING_POLICY
+      - name: comments
+        config:
+          custom_masking_policy:
+            name: COLUMN_VARCHAR_DYNAMIC_MASKING_POLICY
+            using:
+              - reviewer_name
   
   - name: airbnb_platinum_fact_reviews_dt
+    columns:
+      - name: id
+        config:
+          custom_masking_policy:
+            name: COLUMN_NUMBER_MASKING_POLICY
+      - name: comments
+        config:
+          custom_masking_policy:
+            name: COLUMN_VARCHAR_DYNAMIC_MASKING_POLICY
+            using:
+              - reviewer_name
