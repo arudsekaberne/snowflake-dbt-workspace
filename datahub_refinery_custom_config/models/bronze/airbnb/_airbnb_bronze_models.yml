@@ -1,0 +1,41 @@
+version: 2
+
+models:
+          
+  - name: airbnb_bronze_reviews_rap
+    config:
+      custom_row_access_policy:
+        name: SPECIFIC_YEAR_ACCESS_POLICY
+        columns:
+          - date
+
+  - name: airbnb_bronze_reviews_dmp
+    columns:
+      - name: id
+        config:
+          custom_masking_policy:
+            name: COLUMN_NUMBER_MASKING_POLICY
+      - name: comments
+        config:
+          custom_masking_policy:
+            name: COLUMN_COMMENT_CONDITIONAL_MASKING_POLICY
+            using:
+              - reviewer_name
+              
+  - name: airbnb_bronze_reviews_tag_column
+    columns:
+      - name: reviewer_name
+        config:
+          custom_tags:
+            - name: PII_TAG_COLUMN
+              value: 'name'
+            - name: PII_TAG_COLUMN2
+              value: 'name2'
+
+  - name: airbnb_bronze_reviews_tag_table
+    config:
+      custom_tags:
+        - name: PII_TAG_TABLE
+          value: 'name'
+        - name: PII_TAG_TABLE2
+          value: 'name2'

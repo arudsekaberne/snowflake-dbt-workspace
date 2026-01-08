@@ -1,0 +1,41 @@
+snapshots:
+
+  - name: 'airbnb_silver_reviews_rap'
+    config:
+      unique_key: '"id"'
+      strategy: check
+      check_cols:
+        - '"id"'
+        - '"date"'
+        - '"reviewer_name"'
+        - '"comments"'
+
+  - name: 'airbnb_silver_reviews_dmp'
+    config:
+      unique_key: '"id"'
+      strategy: check
+      check_cols:
+        - '"id"'
+        - '"date"'
+        - '"reviewer_name"'
+        - '"comments"'
+
+  - name: 'airbnb_silver_reviews_tag_column'
+    config:
+      unique_key: '"id"'
+      strategy: check
+      check_cols:
+        - '"id"'
+        - '"date"'
+        - '"reviewer_name"'
+        - '"comments"'
+
+  - name: 'airbnb_silver_reviews_tag_table'
+    config:
+      unique_key: '"id"'
+      strategy: check
+      check_cols:
+        - '"id"'
+        - '"date"'
+        - '"reviewer_name"'
+        - '"comments"'

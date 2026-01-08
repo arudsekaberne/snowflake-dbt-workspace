@@ -1,0 +1,8 @@
+version: 2
+
+models:
+
+  - name: airbnb_gold_fact_reviews_rap    
+  - name: airbnb_gold_fact_reviews_dmp        
+  - name: airbnb_gold_fact_reviews_tag_column           
+  - name: airbnb_gold_fact_reviews_tag_table

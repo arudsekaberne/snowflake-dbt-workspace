@@ -1,0 +1,69 @@
+snapshots:
+
+  - name: 'airbnb_silver_reviews_rap'
+    config:
+      unique_key: '"id"'
+      strategy: check
+      check_cols:
+        - '"id"'
+        - '"date"'
+        - '"reviewer_name"'
+        - '"comments"'
+      custom_row_access_policy:
+        name: SPECIFIC_YEAR_ACCESS_POLICY
+        columns:
+          - date
+
+  - name: 'airbnb_silver_reviews_dmp'
+    config:
+      unique_key: '"id"'
+      strategy: check
+      check_cols:
+        - '"id"'
+        - '"date"'
+        - '"reviewer_name"'
+        - '"comments"'
+    columns:
+      - name: id
+        config:
+          custom_masking_policy:
+            name: COLUMN_NUMBER_MASKING_POLICY
+      - name: comments
+        config:
+          custom_masking_policy:
+            name: COLUMN_COMMENT_CONDITIONAL_MASKING_POLICY
+            using:
+              - reviewer_name
+
+  - name: 'airbnb_silver_reviews_tag_column'
+    config:
+      unique_key: '"id"'
+      strategy: check
+      check_cols:
+        - '"id"'
+        - '"date"'
+        - '"reviewer_name"'
+        - '"comments"'
+    columns:
+      - name: reviewer_name
+        config:
+          custom_tags:
+            - name: PII_TAG_COLUMN
+              value: 'name'
+            - name: PII_TAG_COLUMN2
+              value: 'name2'
+
+  - name: 'airbnb_silver_reviews_tag_table'
+    config:
+      unique_key: '"id"'
+      strategy: check
+      check_cols:
+        - '"id"'
+        - '"date"'
+        - '"reviewer_name"'
+        - '"comments"'
+      custom_tags:
+        - name: PII_TAG_TABLE
+          value: 'name'
+        - name: PII_TAG_TABLE2
+          value: 'name2'

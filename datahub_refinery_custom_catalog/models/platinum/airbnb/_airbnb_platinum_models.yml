@@ -1,0 +1,19 @@
+version: 2
+
+models:
+
+  - name: airbnb_platinum_fact_reviews_rap_v
+  - name: airbnb_platinum_fact_reviews_rap_sv
+  - name: airbnb_platinum_fact_reviews_rap_dt
+     
+  - name: airbnb_platinum_fact_reviews_dmp_v
+  - name: airbnb_platinum_fact_reviews_dmp_sv
+  - name: airbnb_platinum_fact_reviews_dmp_dt
+
+  - name: airbnb_platinum_fact_reviews_tag_column_v
+  - name: airbnb_platinum_fact_reviews_tag_column_sv
+  - name: airbnb_platinum_fact_reviews_tag_column_dt
+              
+  - name: airbnb_platinum_fact_reviews_tag_table_v
+  - name: airbnb_platinum_fact_reviews_tag_table_sv
+  - name: airbnb_platinum_fact_reviews_tag_table_dt

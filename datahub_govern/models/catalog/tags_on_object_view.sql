@@ -3,7 +3,10 @@
 SELECT
     'DBT'                                                         AS SYSPROCESSINGTOOL,
     '{{ project_name }}'                                          AS SYSDATAPROCESSORNAME,
-    CONCAT('{{ target.name | upper }}', '_', TRIM(DATABASE_NAME)) AS DATABASE_NAME,
+    CONCAT(
+        '{{ target.name | upper }}', '_',
+        REGEXP_REPLACE(UPPER(TRIM(DATABASE_NAME)), '^(DEV|TEST|PREPROD|PROD)_', '')
+    )                                                             AS DATABASE_NAME,
     TRIM(SCHEMA_NAME)                                             AS SCHEMA_NAME,
     TRIM(OBJECT_NAME)                                             AS OBJECT_NAME,
     TRIM(TAG_NAME)                                                AS TAG_NAME,

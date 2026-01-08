@@ -1,0 +1,8 @@
+version: 2
+
+models:
+          
+  - name: airbnb_bronze_reviews_rap
+  - name: airbnb_bronze_reviews_dmp          
+  - name: airbnb_bronze_reviews_tag_column
+  - name: airbnb_bronze_reviews_tag_table
