@@ -4,6 +4,12 @@ models:
 
   - name: airbnb_platinum_fact_reviews_rap_v
   - name: airbnb_platinum_fact_reviews_rap_sv
+  - name: airbnb_platinum_fact_reviews_rap_v2
+    config:
+      custom_row_access_policy:
+        name: SPECIFIC_YEAR_ACCESS_POLICY
+        columns:
+          - DATE
   - name: airbnb_platinum_fact_reviews_rap_dt
     config:
       custom_row_access_policy:
@@ -13,6 +19,18 @@ models:
      
   - name: airbnb_platinum_fact_reviews_dmp_v
   - name: airbnb_platinum_fact_reviews_dmp_sv
+  - name: airbnb_platinum_fact_reviews_dmp_v2
+    columns:
+      - name: ID
+        config:
+          custom_masking_policy:
+            name: COLUMN_NUMBER_MASKING_POLICY
+      - name: COMMENTS
+        config:
+          custom_masking_policy:
+            name: COLUMN_COMMENT_CONDITIONAL_MASKING_POLICY
+            using:
+              - REVIEWER_NAME
   - name: airbnb_platinum_fact_reviews_dmp_dt
     columns:
       - name: ID
@@ -28,6 +46,15 @@ models:
 
   - name: airbnb_platinum_fact_reviews_tag_column_v
   - name: airbnb_platinum_fact_reviews_tag_column_sv
+  - name: airbnb_platinum_fact_reviews_tag_column_v2
+    columns:
+      - name: REVIEWER_NAME
+        config:
+          custom_tags:
+            - name: PII_TAG_COLUMN
+              value: 'name'
+            - name: PII_TAG_COLUMN2
+              value: 'name2'
   - name: airbnb_platinum_fact_reviews_tag_column_dt
     columns:
       - name: REVIEWER_NAME
@@ -40,6 +67,13 @@ models:
               
   - name: airbnb_platinum_fact_reviews_tag_table_v
   - name: airbnb_platinum_fact_reviews_tag_table_sv
+  - name: airbnb_platinum_fact_reviews_tag_table_v2
+    config:
+      custom_tags:
+        - name: PII_TAG_TABLE
+          value: 'name'
+        - name: PII_TAG_TABLE2
+          value: 'name2'
   - name: airbnb_platinum_fact_reviews_tag_table_dt
     config:
       custom_tags:

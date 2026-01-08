@@ -1,0 +1,72 @@
+version: 2
+
+models:
+
+  - name: airbnb_gold_fact_reviews_rap   
+  
+  - name: airbnb_gold_fact_reviews_dmp
+    config:
+      on_schema_change: fail
+      contract:
+        enforced: true
+        alias_types: false
+    columns:
+      - name: SYSLOADDATE
+        data_type: TIMESTAMP_LTZ
+        
+      - name: SYSDATAPROCESSORNAME
+        data_type: STRING
+        
+      - name: ID
+        data_type: INT
+        constraints:
+          - type: custom
+            expression: "masking policy {{ target.name }}_DBTGOVERN.POLICIES.COLUMN_NUMBER_MASKING_POLICY"
+        
+      - name: DATE
+        data_type: DATE
+        
+      - name: REVIEWER_NAME
+        data_type: STRING
+        
+      - name: COMMENTS
+        data_type: STRING
+        constraints:
+          - type: custom
+            expression: 'masking policy {{ target.name }}_DBTGOVERN.POLICIES.COLUMN_COMMENT_CONDITIONAL_MASKING_POLICY USING ("COMMENTS", "REVIEWER_NAME")'
+
+      - name: LAST_MODIFIED_AT
+        data_type: TIMESTAMP_NTZ
+        
+  - name: airbnb_gold_fact_reviews_tag_column
+    config:
+      on_schema_change: fail
+      contract:
+        enforced: true
+        alias_types: false
+    columns:
+      - name: SYSLOADDATE
+        data_type: TIMESTAMP_LTZ
+        
+      - name: SYSDATAPROCESSORNAME
+        data_type: STRING
+        
+      - name: ID
+        data_type: INT
+        
+      - name: DATE
+        data_type: DATE
+        
+      - name: REVIEWER_NAME
+        data_type: STRING
+        constraints:
+          - type: custom
+            expression: "tag ({{ target.name }}_DBTGOVERN.TAGS.PII_TAG_COLUMN = 'name')"
+        
+      - name: COMMENTS
+        data_type: STRING
+
+      - name: LAST_MODIFIED_AT
+        data_type: TIMESTAMP_NTZ
+  
+  - name: airbnb_gold_fact_reviews_tag_table

@@ -1,0 +1,42 @@
+name: datahub_refinery_dbt_config
+version: 1.0.0
+config-version: 2
+profile: datahub_refinery_dbt_config
+quoting: {identifier: true}
+
+model-paths:
+  - models
+analysis-paths:
+  - analyses
+test-paths:
+  - tests
+seed-paths:
+  - seeds
+macro-paths:
+  - macros
+snapshot-paths:
+  - snapshots
+  
+models:
+  datahub_refinery_dbt_config:
+    +persist_docs: { relation: true, columns: true }
+
+    bronze:
+      +database: "{{ target.name | upper }}_BRONZE_ADF"
+      +materialized: table
+
+    gold:
+      +database: "{{ target.name | upper }}_GOLD_ADF"
+      +materialized: incremental
+
+    platinum:
+      +database: "{{ target.name | upper }}_PLATINUM_ADF"
+      +materialized: view
+
+snapshots:
+  datahub_refinery_dbt_config:
+    +persist_docs: { relation: true, columns: true }
+
+    silver:
+      +database: "{{ target.name | upper }}_SILVER_ADF"
+      +transient: false

@@ -1,0 +1,72 @@
+version: 2
+
+models:
+          
+  - name: airbnb_bronze_reviews_rap
+  
+  - name: airbnb_bronze_reviews_dmp
+    config:
+      contract:
+        enforced: true
+        alias_types: false
+    columns:
+      - name: SYSLOADDATE
+        data_type: TIMESTAMP_LTZ
+        
+      - name: SYSDATAPROCESSORNAME
+        data_type: STRING
+        
+      - name: id
+        quote: true
+        data_type: INT
+        constraints:
+          - type: custom
+            expression: "masking policy {{ target.name }}_DBTGOVERN.POLICIES.COLUMN_NUMBER_MASKING_POLICY"
+        
+      - name: date
+        quote: true
+        data_type: DATE
+        
+      - name: reviewer_name
+        quote: true
+        data_type: STRING
+        
+      - name: comments
+        quote: true
+        data_type: STRING
+        constraints:
+          - type: custom
+            expression: 'masking policy {{ target.name }}_DBTGOVERN.POLICIES.COLUMN_COMMENT_CONDITIONAL_MASKING_POLICY USING ("comments", "reviewer_name")'
+
+  - name: airbnb_bronze_reviews_tag_column
+    config:
+      contract:
+        enforced: true
+        alias_types: false
+    columns:
+      - name: SYSLOADDATE
+        data_type: TIMESTAMP_LTZ
+        
+      - name: SYSDATAPROCESSORNAME
+        data_type: STRING
+        
+      - name: id
+        quote: true
+        data_type: INT
+        
+      - name: date
+        quote: true
+        data_type: DATE
+        
+      - name: reviewer_name
+        quote: true
+        data_type: STRING
+        constraints:
+          - type: custom
+            expression: 'tag ({{ target.name }}_DBTGOVERN.TAGS.PII_TAG_COLUMN = "name")'
+        
+      - name: comments
+        quote: true
+        data_type: STRING
+  
+  - name: airbnb_bronze_reviews_tag_table
